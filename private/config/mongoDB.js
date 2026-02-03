@@ -1,24 +1,15 @@
 const mongoose = require('mongoose');
-const logger = require('./logger');
+const logger = require('./logger'); // Убедись, что logger.js существует
 
-// Функция подключения к MongoDB
 const connectDB = async () => {
   try {
-    // Получаем URI из .env или используем по умолчанию
     const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mba';
     
-    // Опции подключения (только самые важные)
-    const options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    };
-
-    // Подключаемся к базе данных
-    await mongoose.connect(mongoURI, options);
+    // Начиная с Mongoose 6, useNewUrlParser и useUnifiedTopology больше не нужны.
+    await mongoose.connect(mongoURI);
     
     logger.info('✅ MongoDB подключена успешно');
     
-    // Обработчики событий подключения
     mongoose.connection.on('error', (error) => {
       logger.error(`❌ Ошибка MongoDB: ${error.message}`);
     });
@@ -29,12 +20,10 @@ const connectDB = async () => {
 
   } catch (error) {
     logger.error(`❌ Ошибка подключения к MongoDB: ${error.message}`);
-    // Завершаем процесс, если не удалось подключиться
     process.exit(1);
   }
 };
 
-// Функция для безопасного отключения
 const disconnectDB = async () => {
   try {
     await mongoose.connection.close();
@@ -44,9 +33,8 @@ const disconnectDB = async () => {
   }
 };
 
-// Экспортируем функции и mongoose
 module.exports = {
   connectDB,
   disconnectDB,
-  mongoose // чтобы использовать в моделях
+  mongoose
 };

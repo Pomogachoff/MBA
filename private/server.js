@@ -1,7 +1,7 @@
 require('dotenv').config();
 const app = require('./app');
 const logger = require('./config/logger');
-const { connectDB } = require('./config/database');
+const { connectDB } = require('./config/mongoDB');
 
 const PORT = process.env.PORT || 3000;
 
@@ -19,6 +19,7 @@ const start = async () => {
             📂 Режим: ${process.env.NODE_ENV || 'development'}
             ⏰ Время: ${new Date().toLocaleString('ru-RU')}
             `);
+            logger.info(`🌍 Открой http://localhost:${PORT}`);
         });
         
     } catch (error) {
