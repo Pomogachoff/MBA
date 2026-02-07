@@ -16,7 +16,7 @@
   "description": "",
   "main": "private/server.js",
   "scripts": {
-    "start": "nodemon private/server.js"
+    "start": "nodemon private/server.js -e js,hbs,css"
   },
   "repository": {
     "type": "git",
